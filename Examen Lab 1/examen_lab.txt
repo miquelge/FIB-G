@@ -1,0 +1,73 @@
+
+Sistemes Coordenades
+
+Object Space (xm, ym, zm, wm) (si punt wm = 1, si vector wm = 0)
+	
+	Modeling Transform
+
+World Space (wa = wm)
+
+	Viewing Transform
+
+Eye Space (we = wa = wm)
+
+	Project Transform
+
+Clip Space (-wc <= (xc, yc, zc) <= +wc)
+			(sim camera perspectiva wc = -ze)
+
+	Perspective Division (dividim component alfa)
+
+Normalized Device Space
+
+	Viewport Transform
+	Depth Trasnform
+
+Window Space (0 <= xd <= w) (0 <= yd <= h) (0 <= zd <=1) (znear = 0, zfar = 1)
+
+________________________________________________________________________________________
+
+fract(x)
+	part fraccionara de x
+
+floor(x)
+	part entera de x
+
+mod (x, y)
+	x - y * floor(x/y)
+
+mat3 m = mat3(vec3(1,0,0), vec3(0,1,0), vec3(0,0,1));
+	// els tres vectors són les columnes de la matriu
+
+________________________________________________________________________________________
+
+fract(glFragCoord.x) serà 0.5
+
+dfdx, dfdy calculant la normal al fs
+
+________________________________________________________________________________________
+
+float step(float edge, float x)
+	0 if x<edge
+	1 otherwise
+
+void main() {
+	float d = length(gl_FragCoord.xy);
+	gl_FragColor = vec4(step(200, d));
+}
+
+float smoothstep(float edge0, float edge1, float x)
+
+void main() {
+	float d = length(gl_FragCoord.xy);
+	gl_FragColor = vec4(smoothtep(200-10,200+10, d));
+}
+void main() {
+	float d = length(gl_FragCoord.xy);
+	gl_FragColor = vec4(smoothtep(200-1,200+1, d));
+}
+
+float aastep(float threshold, float x) {
+	float width = 0.7*length(vec2(dFdx(value), dFdy(value)));
+	return smoothstep(threshold-width, threshold+width, x);
+}
